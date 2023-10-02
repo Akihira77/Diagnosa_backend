@@ -3,17 +3,6 @@ import { UnauthenticatedError } from "../errors/main.error.js";
 import jwt from "jsonwebtoken";
 import { IRequestExtends } from "../utils/express-extends.js";
 
-type PayloadType = {
-    userId: string;
-    email: string;
-};
-
-declare module "jsonwebtoken" {
-    interface UserPayloadJwt extends jwt.JwtPayload {
-        user: PayloadType;
-    }
-}
-
 const authMiddleware = (
     req: IRequestExtends,
     res: Response,
@@ -27,13 +16,13 @@ const authMiddleware = (
 
     const token = authHeaders.split(" ")[1]!;
     try {
-        const payload = <jwt.UserPayloadJwt>(
+        const payload = <jwt.JwtPayload>(
             jwt.verify(token, process.env.JWT_SECRET!)
         );
 
         req.user = {
-            userId: payload.userId,
-            email: payload.email,
+            userId: payload.user.userId,
+            email: payload.user.email,
         };
         next();
     } catch (error) {
