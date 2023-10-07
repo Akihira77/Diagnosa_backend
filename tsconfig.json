@@ -3,7 +3,8 @@
 	"compilerOptions": {
 		"lib": ["ESNext"],
 		"outDir": "dist",
-		"typeRoots": ["./src/@types/**/*"]
+		"typeRoots": ["./src/@types/**/*"],
+		"resolveJsonModule": true
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "**/*.test.ts", "src/@types"]

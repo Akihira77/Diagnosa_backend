@@ -1,17 +1,17 @@
 {
-    "$schema": "http://json.schemastore.org/swcrc",
-    "env": {
-        "targets": {
-            "node": 18
-        }
-    },
-    "jsc": {
-        "parser": {
-            "syntax": "typescript"
-        }
-    },
-    "module": {
-        "type": "commonjs"
-    },
-    "sourceMaps": "inline"
+	"$schema": "http://json.schemastore.org/swcrc",
+	"env": {
+		"targets": {
+			"node": 18
+		}
+	},
+	"jsc": {
+		"parser": {
+			"syntax": "typescript"
+		}
+	},
+	"module": {
+		"type": "es6"
+	},
+	"sourceMaps": "inline"
 }

@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "GIGIH Capstone Project",
 	"main": "index.ts",
+	"type": "module",
 	"scripts": {
 		"build": "rimraf dist && swc ./src -d dist",
 		"start": "node dist/index.js",
