@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { UnauthenticatedError } from "../errors/main.error.js";
 import jwt from "jsonwebtoken";
 import { IRequestExtends } from "../utils/express-extends.js";
