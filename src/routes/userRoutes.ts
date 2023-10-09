@@ -1,8 +1,10 @@
 import express, { Router } from "express";
 import * as userController from "../controllers/userController.js";
+import authMiddleware from "../middlewares/auth.middleware.js";
 
-const userRoutes:Router = express();
+const routes :Router = express();
 
-userRoutes.post("/register", userController.register);
+routes.post("/register", userController.register);
+routes.post("/login", authMiddleware ,userController.login);
 
-export default userRoutes;
+export default routes;

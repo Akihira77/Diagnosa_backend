@@ -5,7 +5,7 @@ import cors from "cors";
 import morgan from "morgan";
 import connectDB from "./data/connectDb.js";
 import { StatusCodes } from "./utils/constant.js";
-import userRoutes from "./routes/userRoutes.js";
+import routes from "./routes/mainRoutes.js";
 
 
 dotenv.config();
@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 
 //! Routes
 
-app.use("/api/v1", userRoutes);
+app.use(routes);
 
 app.all("*", (req, res) => {
     res.status(StatusCodes.NotFound404).send({
