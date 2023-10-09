@@ -5,13 +5,14 @@ import cors from "cors";
 import morgan from "morgan";
 import connectDB from "./data/connectDb.js";
 import { StatusCodes } from "./utils/constant.js";
-import routes from "./routes/mainRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+
 
 dotenv.config();
 
 const app = express();
 
-//! Middleware
+//! Middleware`
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
@@ -24,7 +25,7 @@ app.use(morgan("dev"));
 
 //! Routes
 
-app.use(routes)
+app.use("/api/v1", userRoutes);
 
 app.all("*", (req, res) => {
     res.status(StatusCodes.NotFound404).send({
