@@ -1,4 +1,5 @@
-import { Request } from "express";
+import { Request, Response } from "express";
+import { Send } from "express-serve-static-core";
 
 type UserType = {
     userId: string;
@@ -8,3 +9,8 @@ type UserType = {
 export interface IRequestExtends extends Request {
     user?: UserType;
 }
+
+export interface IResponseExtends<ResBody> extends Response {
+    json: Send<ResBody, this>;
+}
+
