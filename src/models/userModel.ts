@@ -5,6 +5,10 @@ export interface IUser {
   password: string;
 }
 
+export interface IUserInputPassword extends IUser{
+  passwordIsValid: string;
+}
+
 export interface IUserDocument extends IUser, Document {}
 
 const UserSchema = new Schema<IUserDocument>({

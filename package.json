@@ -23,7 +23,8 @@
 		"express-async-error": "^0.0.2",
 		"jsonwebtoken": "^9.0.2",
 		"langchain": "^0.0.158",
-		"mongoose": "^7.5.3"
+		"mongoose": "^7.5.3",
+		"nodemailer": "^6.9.6"
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.1.62",
@@ -31,6 +32,7 @@
 		"@tsconfig/node18": "^18.2.2",
 		"@types/cors": "^2.8.14",
 		"@types/morgan": "^1.9.6",
+		"@types/nodemailer": "^6.4.11",
 		"@typescript-eslint/eslint-plugin": "^6.7.4",
 		"@typescript-eslint/parser": "^6.7.4",
 		"eslint": "^8.50.0",

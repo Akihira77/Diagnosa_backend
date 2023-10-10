@@ -2,32 +2,35 @@ import bcrypt from 'bcryptjs'
 import { IRequestExtends, IResponseExtends } from '../utils/express-extends.js'
 import { StatusCodes } from '../utils/constant.js'
 import { createUser, findByEmail } from '../services/UserService.js'
-import { IUser } from '../models/userModel.js';
+import { IUser, IUserInputPassword } from '../models/userModel.js';
 import { jwtSign } from '../utils/jwt.js';
 import { JwtPayload } from 'jsonwebtoken';
 
 export const register = async (req: IRequestExtends, res: IResponseExtends<string>) => {
     try {
-        console.log('register controller running');
-        const { email, password } = req.body
+        // console.log('register controller running');
+        const { email, password, passwordIsValid} :IUserInputPassword = req.body
+        
     
         if(!email || !password) {
             return res.status(StatusCodes.BadRequest400).send({message: 'email and password are required'});
         } else if(password.length < 6) {
             return res.status(StatusCodes.BadRequest400).send({message: 'password must be at least 6 characters'}
-        )}
+        )} else if(password !== passwordIsValid) {
+            return res.status(StatusCodes.BadRequest400).send({message: 'password is not match'});
+        }
     
         //check email apakah sudah ada di db
         const existingUser = await findByEmail(email);
         if(existingUser) {
             return res.status(StatusCodes.BadRequest400).send({message: 'Email already registered'});
         }
-    
+        
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
     
         await createUser({email, password: hashedPassword});
-    
+        
         return res.status(StatusCodes.Created201).send({message: 'Successfully created user'});    
     } catch (error) {
         return res.status(StatusCodes.InternalServerError500).send({message: (error as Error).message});
@@ -80,8 +83,6 @@ export const login = async (
             return res.status(StatusCodes.InternalServerError500).send({message: (error as Error).message});
         }
     }
-
-
 
 
 
