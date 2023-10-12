@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import { IRequestExtends, IResponseExtends } from "../utils/express-extends.js";
 import { StatusCodes } from "../utils/constant.js";
 import userService from "../services/UserService.js";
-import { IUser, IUserInputPassword } from "../models/userModel.js";
+import { IUser, IUserInputPassword } from "../@types/interfaces.js";
 import { jwtSign } from "../utils/jwt.js";
 import { BadRequestError, InternalServerError } from "../errors/main.error.js";
 import { JwtPayload } from "jsonwebtoken";
@@ -33,10 +33,7 @@ export const register = async (
 			return;
 		}
 
-		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(password, salt);
-
-		await userService.createUser({ email, password: hashedPassword });
+		await userService.createUser(req.body);
 
 		res.status(StatusCodes.Created201).send({
 			message: "Successfully created user",
