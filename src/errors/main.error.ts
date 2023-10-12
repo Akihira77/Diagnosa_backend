@@ -1,5 +1,11 @@
 import BadRequestError from "./bad-request.error.js";
 import CustomAPIError from "./custom.error.js";
+import InternalServerError from "./server.error.js";
 import UnauthenticatedError from "./unauthenticated.error.js";
 
-export { BadRequestError, CustomAPIError, UnauthenticatedError };
+export {
+	BadRequestError,
+	CustomAPIError,
+	UnauthenticatedError,
+	InternalServerError,
+};

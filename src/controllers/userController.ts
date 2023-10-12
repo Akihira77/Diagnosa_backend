@@ -1,88 +1,98 @@
-import bcrypt from 'bcryptjs'
-import { IRequestExtends, IResponseExtends } from '../utils/express-extends.js'
-import { StatusCodes } from '../utils/constant.js'
-import { createUser, findByEmail } from '../services/UserService.js'
-import { IUser, IUserInputPassword } from '../models/userModel.js';
-import { jwtSign } from '../utils/jwt.js';
-import { JwtPayload } from 'jsonwebtoken';
+import bcrypt from "bcryptjs";
+import { IRequestExtends, IResponseExtends } from "../utils/express-extends.js";
+import { StatusCodes } from "../utils/constant.js";
+import userService from "../services/UserService.js";
+import { IUser, IUserInputPassword } from "../models/userModel.js";
+import { jwtSign } from "../utils/jwt.js";
+import { BadRequestError, InternalServerError } from "../errors/main.error.js";
+import { JwtPayload } from "jsonwebtoken";
 
-export const register = async (req: IRequestExtends, res: IResponseExtends<string>) => {
-    try {
-        // console.log('register controller running');
-        const { email, password, passwordIsValid} :IUserInputPassword = req.body
-        
-    
-        if(!email || !password) {
-            return res.status(StatusCodes.BadRequest400).send({message: 'email and password are required'});
-        } else if(password.length < 6) {
-            return res.status(StatusCodes.BadRequest400).send({message: 'password must be at least 6 characters'}
-        )} else if(password !== passwordIsValid) {
-            return res.status(StatusCodes.BadRequest400).send({message: 'password is not match'});
-        }
-    
-        //check email apakah sudah ada di db
-        const existingUser = await findByEmail(email);
-        if(existingUser) {
-            return res.status(StatusCodes.BadRequest400).send({message: 'Email already registered'});
-        }
-        
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-    
-        await createUser({email, password: hashedPassword});
-        
-        return res.status(StatusCodes.Created201).send({message: 'Successfully created user'});    
-    } catch (error) {
-        return res.status(StatusCodes.InternalServerError500).send({message: (error as Error).message});
-    }
-    
-}
+export const register = async (
+	req: IRequestExtends,
+	res: IResponseExtends<string>
+): Promise<void> => {
+	try {
+		// console.log('register controller running');
+		const { email, password, confirmPassword }: IUserInputPassword =
+			req.body;
+
+		if (!email || !password) {
+			throw new BadRequestError("email and password are required");
+		} else if (password.length < 6) {
+			throw new BadRequestError("password must be at least 6 characters");
+		} else if (password !== confirmPassword) {
+			throw new BadRequestError("password is not match");
+		}
+
+		const existingUser = await userService.findByEmail(email);
+
+		if (existingUser) {
+			res.status(StatusCodes.BadRequest400).send({
+				message: "Email already registered",
+			});
+			return;
+		}
+
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+
+		await userService.createUser({ email, password: hashedPassword });
+
+		res.status(StatusCodes.Created201).send({
+			message: "Successfully created user",
+		});
+		return;
+	} catch (error) {
+		throw new InternalServerError((error as Error).message);
+	}
+};
 
 export const login = async (
-    req: IRequestExtends, 
-    res: IResponseExtends<{message:string}>) => {
-        try {
-            const { email, password }: IUser = req.body;
-            if (!email || !password) {
-                return res.status(StatusCodes.BadRequest400).send({ message: "email and password are required" });
-            }
+	req: IRequestExtends,
+	res: IResponseExtends<{ message: string }>
+): Promise<void> => {
+	try {
+		const { email, password }: IUser = req.body;
+		if (!email || !password) {
+			throw new BadRequestError("email and password are required");
+		}
 
-            const user = await findByEmail(email);
-            if (!user) {
-                return res.status(StatusCodes.BadRequest400).send({ message: "Email or password is wrong" });
-            }
+		const user = await userService.findByEmail(email);
+		if (!user) {
+			throw new BadRequestError("email or password is not correct");
+		}
 
-            const isMatched = await bcrypt.compare(password, user.password);
-            if (!isMatched) {
-                return res.status(StatusCodes.BadRequest400).send({ message: "Email or password is wrong" });
-            }
+		const isMatched = await bcrypt.compare(password, user.password);
+		if (!isMatched) {
+			throw new BadRequestError("email or password is not correct");
+		}
 
-            const accessTokenExpiresIn = process.env.ACCESS_TOKEN ?? "";
-            const refreshTokenExpiresIn = process.env.REFRESH_TOKEN ?? "";
+		// 1 Hour
+		const accessTokenExpiresIn = process.env.ACCESS_TOKEN ?? "1h";
+		const refreshTokenExpiresIn = process.env.REFRESH_TOKEN ?? "1h";
 
-            const payload :JwtPayload = {
-                user: {
-                    userId: user._id,
-                    email: user.email,
-                },
-            }
+		const payload: JwtPayload = {
+			user: {
+				userId: user._id,
+				email: user.email,
+			},
+		};
 
-            const accessToken = jwtSign(payload, accessTokenExpiresIn);
-            const refreshToken = jwtSign(payload, refreshTokenExpiresIn);
+		const accessToken = jwtSign(payload, accessTokenExpiresIn);
+		const refreshToken = jwtSign(payload, refreshTokenExpiresIn);
 
-            return res.cookie('accessToken', accessToken, {
-                httpOnly: true,
-                sameSite: 'strict'
-            }).cookie('refreshToken', refreshToken, {
-                httpOnly: true,
-                sameSite: 'strict'
-            }).status(StatusCodes.Accepted202).json({message: 'Successfully logged in'
-            })
-
-        } catch (error:unknown) {
-            return res.status(StatusCodes.InternalServerError500).send({message: (error as Error).message});
-        }
-    }
-
-
-
+		res.cookie("accessToken", accessToken, {
+			httpOnly: true,
+			sameSite: "strict",
+		})
+			.cookie("refreshToken", refreshToken, {
+				httpOnly: true,
+				sameSite: "strict",
+			})
+			.status(StatusCodes.Accepted202)
+			.json({ message: "Successfully logged in" });
+		return;
+	} catch (error) {
+		throw new InternalServerError((error as Error).message);
+	}
+};

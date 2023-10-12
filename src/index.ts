@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
-import "express-async-error";
 import express from "express";
+import "express-async-errors";
 import cors from "cors";
 import morgan from "morgan";
 import connectDB from "./data/connectDb.js";
 import { StatusCodes } from "./utils/constant.js";
 import routes from "./routes/mainRoutes.js";
-
+import errorHandlerMiddleware from "./middlewares/error-handler.middleware.js";
 
 dotenv.config();
 
@@ -16,10 +16,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
-    cors({
-        origin: "*",
-        methods: "*",
-    })
+	cors({
+		origin: "*",
+		methods: "*",
+	})
 );
 app.use(morgan("dev"));
 
@@ -27,18 +27,21 @@ app.use(morgan("dev"));
 
 app.use(routes);
 
+//! Error Handler Middleware
+app.use(errorHandlerMiddleware);
+
 app.all("*", (req, res) => {
-    res.status(StatusCodes.NotFound404).send({
-        msg: "Route does not match anything from server",
-    });
-    return;
+	res.status(StatusCodes.NotFound404).send({
+		msg: "Route does not match anything from server",
+	});
+	return;
 });
 
 const startServer = () => {
-    const PORT = process.env.PORT || 7000;
-    app.listen(PORT, () => {
-        console.log(`Server is listening on port ${PORT}`);
-    });
+	const PORT = Number(process.env.PORT || 7000);
+	app.listen(PORT, () => {
+		console.log(`Server is listening on port ${PORT}`);
+	});
 };
 
 connectDB().then(() => startServer());
