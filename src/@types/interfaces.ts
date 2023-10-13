@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
 export interface IUser {
     email: string;
@@ -11,6 +11,14 @@ export interface IUserSignUp{
     password: string;
     token: string;
 }
+
+export interface IToken{
+    userId:string | Schema.Types.ObjectId;
+    token:string;
+    createdAt:Date;
+}
+
+export interface ITokenDocument extends IToken, Document {}
 
 export interface IUserInputPassword extends IUser{
     confirmPassword: string;

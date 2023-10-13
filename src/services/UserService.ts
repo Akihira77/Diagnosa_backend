@@ -2,7 +2,7 @@ import { IUser, IUserDocument, IUserSignUp,} from "../@types/interfaces.js";
 import { User } from "../models/userModel.js";
 import JWT from "jsonwebtoken";
 
-class UserService {
+class userService {
 	constructor(protected readonly userModel: typeof User) {}
 
 	async createUser({ email, password }: IUser): Promise<IUserSignUp> {
@@ -37,4 +37,4 @@ class UserService {
 	}
 }
 
-export default new UserService(User);
+export default new userService(User);
