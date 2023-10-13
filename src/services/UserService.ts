@@ -1,5 +1,5 @@
 import { IUser, IUserDocument, IUserSignUp,} from "../@types/interfaces.js";
-import { User } from "../models/userModel.js";
+import { User } from "../models/UserModel.js";
 import JWT from "jsonwebtoken";
 
 class userService {

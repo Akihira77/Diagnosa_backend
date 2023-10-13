@@ -16,7 +16,16 @@ const UserSchema = new Schema<IUserDocument>(
 				message: "Please enter a valid email",
 			}
 		},
-		password: { type: String, required: true, minlength: 6 },
+		password: { 
+      type: String, 
+      required: true, 
+      validate: {
+        validator: (password:string) => {
+          const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/;
+          return regex.test(password);
+        }
+      }
+    },
 	},
 	{ timestamps: true }
 );

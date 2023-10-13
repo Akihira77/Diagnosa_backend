@@ -13,15 +13,12 @@ export const register = async (
 	res: IResponseExtends<string>
 ): Promise<void> => {
 	try {
-		// console.log('register controller running');
 		const { email, password, confirmPassword }: IUserInputPassword =
 			req.body;
 
 		if (!email || !password) {
 			throw new BadRequestError("email and password are required");
-		} else if (password.length < 6) {
-			throw new BadRequestError("password must be at least 6 characters");
-		} else if (password !== confirmPassword) {
+		}  else if (password !== confirmPassword) {
 			throw new BadRequestError("password is not match");
 		}
 
@@ -99,6 +96,21 @@ export const requestPasswordReset = async (req: IRequestExtends, res: IResponseE
 	try {
 		const requestPasswordResetService = await authService.requestPasswordReset(req.body.email);
 		res.status(StatusCodes.Accepted202).json({message: requestPasswordResetService.link});
+		return;
+	} catch (error) {
+		throw new InternalServerError((error as Error).message);
+	}
+}
+
+export const resetPassword = async (req: IRequestExtends, res: IResponseExtends<{success:boolean}>) => {
+	try {
+		const resetPasswordService = await authService.resetPassword(
+			req.body.userId,
+			req.body.token,
+			req.body.password
+		);
+		
+		res.status(StatusCodes.Accepted202).json({success: resetPasswordService});
 		return;
 	} catch (error) {
 		throw new InternalServerError((error as Error).message);
