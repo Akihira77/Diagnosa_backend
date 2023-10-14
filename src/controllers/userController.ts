@@ -107,7 +107,8 @@ export const resetPassword = async (req: IRequestExtends, res: IResponseExtends<
 		const resetPasswordService = await authService.resetPassword(
 			req.body.userId,
 			req.body.token,
-			req.body.password
+			req.body.password,
+			req.body.confirmPassword
 		);
 		
 		res.status(StatusCodes.Accepted202).json({success: resetPasswordService});

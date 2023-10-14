@@ -34,7 +34,7 @@ import { ISendEmailOptions } from '../@types/interfaces.js';
             return {link};
         }
 
-        async resetPassword(userId: string, token: string, password: string): Promise<boolean> {
+        async resetPassword(userId: string, token: string, password: string, confirmPassword: string): Promise<boolean> {
 
             const passwordResetToken = await Token.findOne({ userId });
             if (!passwordResetToken) {
@@ -45,7 +45,9 @@ import { ISendEmailOptions } from '../@types/interfaces.js';
             const authServiceInstance = new authService();
             const isValidPassword = await authServiceInstance.passwordValidation(password);
             if (!isValidPassword) {
-                throw new Error('Password must be at least 6 characters, contain at least one uppercase letter, one lowercase letter, and one number');
+                throw new Error('Password must be at least 6 characters, and one number');
+            } else if (password !== confirmPassword) {
+                throw new Error('Passwords do not match');
             }
 
             const isValid = await bcrypt.compare(token, passwordResetToken.token);
