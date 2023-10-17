@@ -10,6 +10,11 @@ declare global {
 			OPENAI_API_KEY: string;
 			ACCESS_TOKEN: string; // for jwt (ex: 1h, 10d)
 			REFRESH_TOKEN: string; // for jwt (ex: 1h, 10d)
+			EMAIL_HOST: string;
+			EMAIL: string;
+			PASSWORD: string;
+			CLIENT_URL: string;
+			BCRYPT_SALT: string;
 		}
 	}
 }
