@@ -1,5 +1,5 @@
-import { IUser, IUserDocument, IUserSignUp,} from "../@types/interfaces.js";
-import { User } from "../models/UserModel.js";
+import { IUser, IUserDocument, IUserSignUp } from "../@types/interfaces.js";
+import { User } from "../models/userModel.js";
 import JWT from "jsonwebtoken";
 
 class userService {
@@ -10,15 +10,14 @@ class userService {
 			email,
 			password,
 		});
-        const token = JWT.sign({id: user._id}, process.env.JWT_SECRET!);
+		const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET!);
 		await user.save();
 		return {
 			email: user.email,
 			password: user.password,
-			token: token
+			token: token,
 		};
 	}
-	
 
 	async findByEmail(email: string): Promise<IUserDocument | null> {
 		const user = await User.findOne({ email });
