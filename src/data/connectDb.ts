@@ -1,16 +1,14 @@
-    import mongoose from "mongoose";
-    import dotenv from "dotenv";
+import mongoose from "mongoose";
 
-    dotenv.config();
+const connectDB = async () => {
+	const MONGO_URI = process.env.MONGO_URI || "Missing URI";
+	try {
+		await mongoose.connect(MONGO_URI);
+		console.log(`DB Connected`);
+	} catch (error) {
+		console.log("mongoDB error=> ", error);
+		process.exit();
+	}
+};
 
-    const connectDB = async () => {
-        const MONGO_URI = process.env.MONGO_URI || "Missing URI";
-        try {
-            await mongoose.connect(MONGO_URI);
-        } catch (error) {
-            console.log("mongoDB error=> ", error);
-            process.exit();
-        }
-    };
-
-    export default connectDB;
+export default connectDB;

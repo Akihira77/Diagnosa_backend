@@ -4,6 +4,7 @@ declare global {
 	namespace NodeJS {
 		interface ProcessEnv {
 			PORT: string;
+			WS_PORT: string;
 			MONGO_URI: string;
 			JWT_SECRET: string;
 			OPENAI_API_KEY: string;
