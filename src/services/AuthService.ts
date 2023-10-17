@@ -106,5 +106,9 @@ class authService {
 		return true;
 	}
 }
+<<<<<<< HEAD:src/services/authService.ts
 
+=======
+            
+>>>>>>> e8f52c58e71362d70adc42876ba69dc10c0d028b:src/services/AuthService.ts
 export default new authService();
