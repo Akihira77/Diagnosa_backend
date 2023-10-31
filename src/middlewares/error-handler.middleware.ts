@@ -6,12 +6,12 @@ import {
 } from "../errors/main.error.js";
 import { StatusCodes } from "../utils/constant.js";
 
-const errorHandlerMiddleware = async (
+const errorHandlerMiddleware = (
 	err: unknown,
 	req: Request,
 	res: Response,
 	next: NextFunction
-): Promise<void> => {
+): void => {
 	if (err instanceof InternalServerError) {
 		res.status(err.statusCode).send({ msg: err.message });
 	} else if (err instanceof BadRequestError) {

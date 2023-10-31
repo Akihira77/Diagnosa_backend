@@ -1,32 +1,42 @@
+import { ConversationChain } from "langchain/chains";
 import uWS from "uWebSockets.js";
 import ChatService from "../services/ChatService.js";
-
 import { StringDecoder } from "string_decoder";
 import mongoose from "mongoose";
+
 const decoder = new StringDecoder("utf-8");
 
 export const startSocket = async () => {
-	const chatInit = await ChatService.initialize();
+	const chatInit = new ChatService();
 	let sessionId: string = "";
 	const ws = uWS.App().ws("/api/ws", {
 		// Options
 		compression: 0,
-		maxPayloadLength: 16 * 1024 * 1024,
+		maxPayloadLength: 16 * 1000 * 1024, // 16 MB
 		idleTimeout: 10,
-		maxBackpressure: 64 * 1024,
+		maxBackpressure: 64 * 1024, // 64 B
 
 		// Handler
 		open: (ws) => {
-			console.log(`${new Date().toDateString()} User connected socket`);
+			console.log(`${new Date().toISOString()} User connected socket`);
 			sessionId = new mongoose.mongo.ObjectId().toString();
+			ws.send(sessionId);
 		},
-		message: (ws, message, isBinary) => {
+		message: async (ws, message, isBinary) => {
 			const text = decoder.write(Buffer.from(message));
 			console.log(`user text: ${text}`);
-			chatInit.generateAnswer(text, sessionId).then((result) => {
-				// console.log(result);
-				ws.send(result.response, isBinary, true);
-			});
+
+			const chain: ConversationChain = await chatInit.generateAnswer(
+				sessionId
+			);
+
+			await chain.call({ input: text }, [
+				{
+					handleLLMNewToken(token) {
+						ws.send(token, isBinary, true);
+					},
+				},
+			]);
 		},
 		drain: (ws) => {
 			console.log("WebSocket backpressure: " + ws.getBufferedAmount());
