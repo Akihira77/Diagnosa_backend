@@ -27,7 +27,7 @@ class authService {
 			createdAt: Date.now(),
 		}).save();
 
-		const link = `${process.env.CLIENT_URL}}/passwordReset?token=${resetToken}&id=${user._id}`;
+		const link = `${process.env.CLIENT_URL}/passwordReset?token=${resetToken}&id=${user._id}`;
 
 		sendEmail({
 			email: user.email,
