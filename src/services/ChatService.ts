@@ -1,29 +1,25 @@
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { BaseMessage } from "langchain/schema";
 import { MongoDBAtlasVectorSearch } from "langchain/vectorstores/mongodb_atlas";
 import { Embedded, IEmbeddedSchema } from "../models/embeddedModel.js";
 import createEmbedding, { embeddings } from "../utils/createEmbeddings.js";
-import {
-	BufferMemory,
-	ConversationSummaryBufferMemory,
-} from "langchain/memory";
+import { ConversationSummaryBufferMemory } from "langchain/memory";
 import { MongoDBChatMessageHistory } from "langchain/stores/message/mongodb";
-import { ConversationChain } from "langchain/chains";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { Memory } from "../models/memoryModel.js";
 import {
 	ChatPromptTemplate,
 	HumanMessagePromptTemplate,
-	MessagesPlaceholder,
-	PromptTemplate,
 	SystemMessagePromptTemplate,
 } from "langchain/prompts";
-import {
-	RunnableSequence,
-	RunnablePassthrough,
-} from "langchain/schema/runnable";
+import { RunnableSequence } from "langchain/schema/runnable";
 import { StringOutputParser } from "langchain/schema/output_parser";
 import { Document } from "langchain/document";
 import { OpenAI } from "langchain/llms/openai";
+
+export type InputConversation = {
+	input: string;
+	chat_history: BaseMessage[];
+};
 
 class ChatService {
 	readonly vectorStore;
@@ -50,14 +46,6 @@ class ChatService {
 	memoryInitialize(sessionId: string) {
 		const collection = Memory.collection;
 
-		// const memory = new BufferMemory({
-		// 	chatHistory: new MongoDBChatMessageHistory({
-		// 		collection,
-		// 		sessionId,
-		// 	}),
-		// 	returnMessages: true,
-		// });
-
 		const summaryModel = new OpenAI({
 			openAIApiKey: process.env.OPENAI_API_KEY,
 			temperature: 0,
@@ -66,7 +54,6 @@ class ChatService {
 
 		const memory = new ConversationSummaryBufferMemory({
 			llm: summaryModel,
-			// maxTokenLimit: 50,
 			returnMessages: true,
 			chatHistory: new MongoDBChatMessageHistory({
 				collection,
@@ -99,93 +86,67 @@ Akan disediakan juga riwayat diskusi antara dirimu AI dan Pasien untuk menambah 
 		return CONVERSATION_PROMPT;
 	}
 
-	// input: string,
-	async generateAnswer(sessionId: string): Promise<any> {
-		const answerTemplate = `Jawab pertanyaan hanya pada konteks berikut : {context}
-		
-		Pertanyaan: {question}`;
-		const ANSWER_PROMPT = PromptTemplate.fromTemplate(answerTemplate);
+	async conversation(): Promise<RunnableSequence<InputConversation, string>> {
+		const CONVERSATION_PROMPT = this.promptInitialize();
+		const retriever = this.vectorStore.asRetriever();
 
-		const promptTemplate = ChatPromptTemplate.fromMessages([
-			[
-				"system",
-				"Kamu adalah sistem pendiagnosa penyakit yang baik, friendly sistem, tugasmu adalah memberikan output informasi solusi secara aktifitas dan medis dari keluhan yang diinputkan user, dan melanjutkan diskusi user dengan selalu bertanya ttg informasi tambahan hingga user berhenti bertanya. Tentunya karena kamu adalah sistem friendly yang super baik kamu tidak ingin membuat user bingung dengan banyak pertanyaan dalam satu waktu, jadi usahakan setiap respon darimu tidak terlalu banyak pertanyaan agar user awam dapat berkomunikasi dengan baik",
-			],
-			new MessagesPlaceholder("history"),
-			["user", "{input}"],
-		]);
-
-		const collection = Memory.collection;
-
-		const memory = new BufferMemory({
-			chatHistory: new MongoDBChatMessageHistory({
-				collection,
-				sessionId,
-			}),
-		});
-
-		const model = new ChatOpenAI({
-			modelName: "gpt-3.5-turbo-16k",
-			temperature: 0.9,
-			maxTokens: -1,
-			streaming: true,
-		});
-
-		const chain = new ConversationChain({
-			llm: model,
-			memory,
-			prompt: promptTemplate,
-		});
-
-		const formatChatHistory = (chatHistory: [string, string][]) => {
-			const formattedDialogueTurns = chatHistory.map(
-				(dialogueTurn) =>
-					`Human: ${dialogueTurn[0]}\nAssistant: ${dialogueTurn[1]}`
-			);
-			return formattedDialogueTurns.join("\n");
-		};
-
-		type ConversationalRetrievalQAChainInput = {
-			question: string;
-			chat_history: [string, string][];
-		};
-
-		const standaloneQuestionChain = RunnableSequence.from([
+		const conversationChain = RunnableSequence.from([
 			{
-				question: (input: ConversationalRetrievalQAChainInput) =>
-					input.question,
-				chat_history: (input: ConversationalRetrievalQAChainInput) =>
-					formatChatHistory(input.chat_history),
+				information: async ({ input }: InputConversation) => {
+					const resultSearch = await retriever.getRelevantDocuments(
+						input
+					);
+
+					// console.log(resultSearch);
+					const result = this.combineDocumentsFn(resultSearch, 2);
+					return result;
+				},
+				chat_history: ({ chat_history }: InputConversation) =>
+					this.formatChatHistory(chat_history),
+				input: ({ input }: InputConversation) => input,
 			},
-			promptTemplate,
-			model,
+			CONVERSATION_PROMPT,
+			this.model,
 			new StringOutputParser(),
 		]);
 
-		const combineDocumentsFn = (docs: Document[], separator = "\n\n") => {
-			const serializedDocs = docs.map((doc) => doc.pageContent);
-			return serializedDocs.join(separator);
-		};
+		return conversationChain;
+	}
 
-		const retriever = this.vectorStore.asRetriever();
+	formatChatHistory(chatHistory: BaseMessage[]) {
+		const chatHistories = [];
 
-		const answerChain = RunnableSequence.from([
-			{
-				context: retriever.pipe(combineDocumentsFn),
-				question: new RunnablePassthrough(),
-			},
-			ANSWER_PROMPT,
-			model,
-		]);
+		for (let i = 0; i < chatHistory.length; i++) {
+			const content = chatHistory[i].content;
 
-		const conversationalRetrievalQAChain =
-			standaloneQuestionChain.pipe(answerChain);
+			chatHistories.push(content);
+		}
 
-		return conversationalRetrievalQAChain;
+		const result = chatHistories.join(". ");
+		return result;
+	}
+
+	combineDocumentsFn(
+		docs: Document[],
+		k: number | undefined,
+		separator = ". "
+	) {
+		let serializedDocs: string[] = [];
+		if (k) {
+			for (let i = 0; i < k; i++) {
+				serializedDocs.push(docs[i].pageContent);
+			}
+		} else {
+			serializedDocs = docs.map((doc) => doc.pageContent);
+		}
+
+		return serializedDocs.join(separator);
 	}
 
 	async saveInformation(name: string, description: string): Promise<unknown> {
 		const embedding = await createEmbedding(description);
+
+		if (embedding.length == 0) return;
 
 		const newDoc: IEmbeddedSchema = {
 			name,

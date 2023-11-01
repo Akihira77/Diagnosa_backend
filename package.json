@@ -26,8 +26,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"langchain": "^0.0.158",
 		"mongoose": "^7.5.3",
-		"nodemailer": "^6.9.6",
-		"uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.32.0"
+		"nodemailer": "^6.9.6"
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.1.62",

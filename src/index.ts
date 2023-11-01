@@ -7,7 +7,6 @@ import connectDB from "./data/connectDb.js";
 import { StatusCodes } from "./utils/constant.js";
 import routes from "./routes/mainRoutes.js";
 import errorHandlerMiddleware from "./middlewares/error-handler.middleware.js";
-import { startSocket } from "./utils/socket.js";
 
 const app = express();
 const corsOptions: CorsOptions = {
@@ -40,8 +39,6 @@ const startServer = async () => {
 	app.listen(PORT, () => {
 		console.log(`Server is listening on port http://localhost:${PORT}`);
 	});
-
-	await startSocket();
 };
 
 connectDB().then(() => startServer());

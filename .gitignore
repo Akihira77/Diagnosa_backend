@@ -4,4 +4,4 @@ node_modules
 
 dist
 
-diagnosa.penyakits.json
+diagnosa.*.json
