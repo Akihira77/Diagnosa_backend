@@ -1,39 +1,39 @@
-import { IUser, IUserDocument, User } from "../models/userModel.js";
+import { IUser, IUserDocument, IUserSignUp } from "../@types/interfaces.js";
+import { User } from "../models/userModel.js";
+import JWT from "jsonwebtoken";
 
-export const createUser = async ({
-    email,
-    password
-}:IUser): Promise<IUserDocument> => {
-    try {
-        const user: IUserDocument = new User({
-            email,
-            password
-        });
-        await user.save();
-        return user;
-        } catch (error) {
-            if (error instanceof Error) {
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred'); 
-            }
-        }
-    }
+class userService {
+	constructor(protected readonly userModel: typeof User) {}
 
-    export const findByEmail = async (email: string): Promise<IUserDocument | null> => {
-        try {
-            const user  = await User.findOne({email});
-            if(user){
-                return user;
-            }
-            return null
-        } catch (error) {
-            if (error instanceof Error) {
-                throw new Error(error.message);
-            } else {
-                throw new Error('An unknown error occurred'); 
-            }        
-        }
-    }
+	async createUser({ email, password }: IUser): Promise<IUserSignUp> {
+		const user: IUserDocument = new User({
+			email,
+			password,
+		});
+		const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET!);
+		await user.save();
+		return {
+			email: user.email,
+			password: user.password,
+			token: token,
+		};
+	}
 
-    
+	async findByEmail(email: string): Promise<IUserDocument | null> {
+		const user = await User.findOne({ email });
+		if (user) {
+			return user;
+		}
+		return null;
+	}
+
+	catchingError(error: unknown): void {
+		if (error instanceof Error) {
+			throw new Error(error.message);
+		} else {
+			throw new Error("An unknown error occurred");
+		}
+	}
+}
+
+export default new userService(User);
