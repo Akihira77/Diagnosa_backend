@@ -37,6 +37,10 @@ to run the program locally with `nodemon`
 -   **Headers**  
      Content-Type: application/json
 
+-   **Success Response:**
+    -   **Code**: 201 \
+         **Content**: { message: "Successfully created user" }
+
 ### **POST api/v1/auth/login**
 
 -   **URL Params**  
