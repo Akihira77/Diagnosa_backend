@@ -41,6 +41,11 @@ to run the program locally with `nodemon`
     -   **Code**: 201 \
          **Content**: { message: "Successfully created user" }
 
+-   **Error Response:**
+    -   **Code:** 500  
+         **Content:** `{ err: <error> }`
+
+
 ### **POST api/v1/auth/login**
 
 -   **URL Params**  
@@ -61,6 +66,10 @@ to run the program locally with `nodemon`
      * __Code__: 202 \
        **Content**: { message: "Successfully logged in" }
 
+-   **Error Response:**
+    -   **Code:** 500  
+         **Content:** `{ err: <error> }`
+
 ### **POST api/v1/auth/requestPasswordReset**
 
 -   **URL Params**  
@@ -79,6 +88,10 @@ to run the program locally with `nodemon`
 -   **Success Response:**  
      * __Code__: 200 \
        **Content**: { message: "${CLIENT_URL}/api/v1/passwordReset?token=${resetToken}&id=${user._id}" }
+
+-   **Error Response:**
+    -   **Code:** 500  
+         **Content:** `{ err: <error> }`
 
 ### **POST api/v1/auth/resetPassword**
 
@@ -102,6 +115,9 @@ to run the program locally with `nodemon`
      * __Code__: 200 \
        **Content**: { success : true }
 
+-   **Error Response:**
+    -   **Code:** 500  
+         **Content:** `{ err: <error> }`
 
 ## Conversation
 
