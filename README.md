@@ -147,3 +147,30 @@ talking with AI system
 -   **Error Response:**
     -   **Code:** 500  
          **Content:** `{ err: <error> }`
+
+## Crawler
+
+### Data Crawler
+
+The source of disease data in this project comes from data crawling from popular and trusted health websites, including:
+
+-   <https://www.alodokter.com/penyakit-a-z>
+-   <https://www.halodoc.com/kesehatan>
+-   <https://www.ai-care.id/healthpedia/penyakit-a-z>  
+     **Note** : the crawler process uses a separate project from this repository, you can see the crawler repository [Here](https://github.com/shodiqimamp/Diagnosa_crawler)
+
+## How It Works
+
+1. This crawler uses the cheerio library to retrieve disease data in the form of `name`, `definition`, `symptoms`, `causes`, `risk factors`, `diagnosis`, `treatment`, and `prevention`.
+2. Data that is successfully crawled will be stored in the disease database which contains :
+
+    ```TS
+    {
+      name: 'string',
+      description: 'string'
+    }
+    ```
+
+    the description column contains a combination of `definition`, `symptoms`, `causes`, `risk factors`, `diagnosis`, `treatment`, and `prevention`.
+
+3. The stored data will be embedded using OpenAIEmbeddings from the langchain library, which is then saved into the database to the embedded model.
