@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import ChatService from "../services/ChatService.js";
 import { StatusCodes } from "../utils/constant.js";
 import { BadRequestError } from "../errors/main.error.js";
-import mongoose from "mongoose";
+import { IRequestExtends } from "../utils/express-extends.js";
+import { Memory } from "../models/memoryModel.js";
 
 const saveData = async (req: Request, res: Response) => {
 	const { name, description } = req.body;
@@ -23,8 +24,15 @@ const cleanData = async (req: Request, res: Response) => {
 	return;
 };
 
-const initialize = async (req: Request, res: Response) => {
-	const sessionId = new mongoose.mongo.ObjectId().toString();
+const initialize = async (req: IRequestExtends, res: Response) => {
+	const { email, userId } = req.user!;
+	const initializeMemory = await Memory.create({
+		email,
+		userId,
+		messages: [],
+	});
+
+	const sessionId = initializeMemory.id;
 
 	res.status(StatusCodes.Ok200).send({ sessionId });
 	return;
@@ -32,7 +40,7 @@ const initialize = async (req: Request, res: Response) => {
 
 const conversation = async (
 	req: Request<never, never, { input: string; sessionId: string }, never>,
-	res: Response
+	res: Response,
 ) => {
 	const { input, sessionId } = req.body;
 	if (!sessionId || sessionId === "") {
@@ -66,7 +74,7 @@ const conversation = async (
 			{ input },
 			{
 				output: streamedResult,
-			}
+			},
 		);
 
 		res.end();
@@ -77,4 +85,27 @@ const conversation = async (
 	}
 };
 
-export { saveData, cleanData, conversation, initialize };
+const findConversationBySessionId = async (
+	req: Request<never, never, never, { sessionId: string }>,
+	res: Response,
+) => {
+	const sessionId = req.query.sessionId;
+
+	try {
+		const conversationHistory = await Memory.findById(sessionId);
+
+		res.status(StatusCodes.Ok200).send({ conversationHistory });
+		return;
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+};
+
+export {
+	saveData,
+	cleanData,
+	conversation,
+	initialize,
+	findConversationBySessionId,
+};
