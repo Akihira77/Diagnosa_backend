@@ -16,6 +16,8 @@ npm run dev
 
 to run the program locally with `nodemon`
 
+import `GIGIH Capstone.postman_collection.json` to your Postman, Insomnia, etc, to see the and how to work with all endpoints
+
 # Endpoints
 
 ## Auth
@@ -38,13 +40,13 @@ to run the program locally with `nodemon`
      Content-Type: application/json
 
 -   **Success Response:**
+
     -   **Code**: 201 \
          **Content**: { message: "Successfully created user" }
 
 -   **Error Response:**
     -   **Code:** 500  
          **Content:** `{ err: <error> }`
-
 
 ### **POST api/v1/auth/login**
 
@@ -62,9 +64,10 @@ to run the program locally with `nodemon`
 -   **Headers**  
      Content-Type: application/json
 
--   **Success Response:**  
-     * __Code__: 202 \
-       **Content**: { message: "Successfully logged in" }
+-   **Success Response:**
+
+    -   **Code**: 202 \
+         **Content**: { message: "Successfully logged in" }
 
 -   **Error Response:**
     -   **Code:** 500  
@@ -85,9 +88,10 @@ to run the program locally with `nodemon`
 -   **Headers**  
      Content-Type: application/json
 
--   **Success Response:**  
-     * __Code__: 200 \
-       **Content**: { message: "${CLIENT_URL}/api/v1/passwordReset?token=${resetToken}&id=${user._id}" }
+-   **Success Response:**
+
+    -   **Code**: 200 \
+         **Content**: { message: "${CLIENT_URL}/api/v1/passwordReset?token=${resetToken}&id=${user.\_id}" }
 
 -   **Error Response:**
     -   **Code:** 500  
@@ -111,9 +115,10 @@ to run the program locally with `nodemon`
 -   **Headers**  
      Content-Type: application/json
 
--   **Success Response:**  
-     * __Code__: 200 \
-       **Content**: { success : true }
+-   **Success Response:**
+
+    -   **Code**: 200 \
+         **Content**: { success : true }
 
 -   **Error Response:**
     -   **Code:** 500  
@@ -191,20 +196,20 @@ talking with AI system
     }
     ```
 
--   **Headers**
-
-    ```TS
-    Content-Type: "text/event-stream",
-    Cache-Control: "no-cache",
-    Connection: "keep-alive",
-    Access-Control-Allow-Origin: "*",
-    Authorization: `Bearer <token>`
-    ```
+-   **Headers**  
+     Content-Type: application/json  
+     Authorization: `Bearer <token>`
 
 -   **Success Response:**
 
     -   **Code:** 200  
-         **Content:** `<streamed_text>`
+         **Headers:**  
+         Content-Type: "text/event-stream",  
+         Cache-Control: "no-cache",  
+         Connection: "keep-alive",  
+         Access-Control-Allow-Origin: "\*",
+
+        **Content:** `<streamed_text>`
 
 -   **Error Response:**
     -   **Code:** 500  

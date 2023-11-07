@@ -1,0 +1,224 @@
+{
+	"info": {
+		"_postman_id": "51ea8056-4286-45f1-9831-5ea1a72b09a4",
+		"name": "GIGIH Capstone",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24368336"
+	},
+	"item": [
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Conversation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NDVhNThmMTc4MmVmZmU2MTIxNWFlOSIsImVtYWlsIjoidXNlcjEyM0BtYWlsLmNvbSJ9LCJpYXQiOjE2OTkwNjMxOTYsImV4cCI6MTY5OTA2Njc5Nn0.LKd7yue8e8TM_WKSDRAqgygrN3T1CSTIxtuL3g7u40A"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"input\" : \"anakku susah tidur pas malam\",\r\n\t\"sessionId\" : \"6545a5cd1782effe61215aec\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/chat/conversation"
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"user\" : \"Andika\",\r\n\t\"chat\" : \"Meta has announced a series of new chatbots to be used in its Messenger service.The chatbots will have 'personality' and specialise in certain subjects, like holidays or cooking advice.It is the latest salvo in a chatbot arms race between tech companies desperate to produce more accurate and personalised artificial intelligence.The chatbots are still a work in progress with 'limitations', said boss Mark Zuckerberg.In California, during Meta's first in-person event since before the pandemic, Mr Zuckerberg said that it had been an 'amazing year for AI'.The company is calling its main chatbot 'Meta AI' and can be used in messaging. For example, users can ask Meta AI questions in chat 'to settle arguments' or ask other questions.The BBC has not yet tested the chatbot which is based on Llama 2, the large language model that the company released for public commercial use in July.Several celebrities have also signed up to lend their personalities to different types of chatbots, including Snoop Dogg and Kendall Jenner.The idea is to create chatbots that are not just designed to answer questions.'This isn't just going to be about answering queries,' Zuckerberg said. 'This is about entertainment'.According to Meta, NFL star Tom Brady will play an AI character called 'Bru', 'a wisecracking sports debater' and YouTube star MrBeast will play 'Zach', a big brother 'who will roast you'.Mr Zuckerberg said there were still 'a lot of limitations' around what the bots could answer.The chatbots will be rolled out in the coming days and only in the US initially.Mr Zuckerberg also discussed the metaverse - a virtual world - which is a concept that Mr Zuckerberg has so far spent tens of billions of dollars on.Although Meta had already announced its new virtual reality headset, Quest 3, the company gave further details at the event.Meta's boss described the headset as the first 'mainstream' mixed reality headset. Cameras facing forward will mean the headset will allow for augmented reality. It will be available from 10 October.The firm's big, long-term bet on the metaverse still appears yet to pay off, with Meta's VR division suffering $21bn (£17bn) in losses since the start of 2022.The Quest 3 came after Apple entered the higher-priced mixed reality hardware market with the Vision Pro earlier this year.Mat Day, global gaming strategy director for EssenceMediacom, said Mark Zuckerberg had 'reinvigorated' the VR sector.'Meta's VR roadmap is now firmly positioned around hardware priced for the mass market. This is a stark contrast to Apple's approach which is aimed at the high end tech enthusiast,' he said.Meta's announcement came on the same day as rival OpenAI, the Microsoft-backed creator of ChatGPT, confirmed its chatbot can now browse the internet to provide users with current information. The artificial intelligence-powered system was previously trained only using data up to September 2021.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/chat/insert-data"
+					},
+					"response": []
+				},
+				{
+					"name": "Seed Data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{API_URL}}/chat/seed-data"
+					},
+					"response": []
+				},
+				{
+					"name": "Clean Data Embeddings",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/chat/clean-data"
+					},
+					"response": []
+				},
+				{
+					"name": "Initialize",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NDVhNThmMTc4MmVmZmU2MTIxNWFlOSIsImVtYWlsIjoidXNlcjEyM0BtYWlsLmNvbSJ9LCJpYXQiOjE2OTkwNjgxNTAsImV4cCI6MTY5OTA3MTc1MH0.VXQCsrETkAB7mpDLdnUWdtav5SdLSZ5uEupbt73Ik4c"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/chat/initialize"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversation By SessionId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NDVhNThmMTc4MmVmZmU2MTIxNWFlOSIsImVtYWlsIjoidXNlcjEyM0BtYWlsLmNvbSJ9LCJpYXQiOjE2OTkwNjgxNTAsImV4cCI6MTY5OTA3MTc1MH0.VXQCsrETkAB7mpDLdnUWdtav5SdLSZ5uEupbt73Ik4c"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/chat/get-conversation?sessionId=6545b906cf60c0144c2d0b04",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"chat",
+								"get-conversation"
+							],
+							"query": [
+								{
+									"key": "sessionId",
+									"value": "6545b906cf60c0144c2d0b04"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\" : \"user123@mail.com\",\r\n\t\"password\" : \"User123\",\r\n\t\"confirmPassword\" : \"User123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\" : \"user123@mail.com\",\r\n\t\"password\" : \"User123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Request Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"email\" : \"11193182@nusamandiri.ac.id\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/auth/requestPasswordReset"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"6528f081960bd6003b76a06a\",\r\n    \"token\":\"2560f8d841b0d3aac4983375ef251c242b00e6002f1a8a4c84cefb78eab80c4f\",\r\n    \"password\":\"Newpassword123\",\r\n    \"confirmPassword\":\"Newpassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/auth/resetPassword"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "localhost:7000/api/v1",
+			"type": "string"
+		}
+	]
+}
