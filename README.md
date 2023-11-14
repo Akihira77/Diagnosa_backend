@@ -84,13 +84,13 @@ User Login
 
     -   **Code**: 202  
          **Content**:
-
+          ```TS
               {
                    accessToken: <string>,
                    refreshToken: <string>,
                    message: "Successfully logged in"
               }
-
+          ```
 -   **Error Response:**
     -   **Code:** 500  
          **Content:** `{ err: <error> }`
@@ -115,7 +115,7 @@ Request to reset password to server
 -   **Success Response:**
 
     -   **Code**: 200 \
-         **Content**: `{ message: "{CLIENT_URL}/api/v1/passwordReset?token={resetToken}&id={user.\_id}" }`
+         **Content**: `{ message: "{CLIENT_URL}/api/v1/passwordReset?token={resetToken}&id={user._id}" }`
 
 -   **Error Response:**
     -   **Code:** 500  
