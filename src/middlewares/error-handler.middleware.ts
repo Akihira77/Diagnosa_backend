@@ -10,8 +10,9 @@ const errorHandlerMiddleware = (
 	err: unknown,
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ): void => {
+	console.log("Error catch with middleware => ", err);
 	if (err instanceof InternalServerError) {
 		res.status(err.statusCode).send({ msg: err.message });
 	} else if (err instanceof BadRequestError) {

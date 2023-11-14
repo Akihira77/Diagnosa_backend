@@ -94,7 +94,7 @@ Akan disediakan juga riwayat diskusi antara dirimu AI dan Pasien untuk menambah 
 			{
 				information: async ({ input }: InputConversation) => {
 					const resultSearch = await retriever.getRelevantDocuments(
-						input
+						input,
 					);
 
 					// console.log(resultSearch);
@@ -129,7 +129,7 @@ Akan disediakan juga riwayat diskusi antara dirimu AI dan Pasien untuk menambah 
 	combineDocumentsFn(
 		docs: Document[],
 		k: number | undefined,
-		separator = ". "
+		separator = ". ",
 	) {
 		let serializedDocs: string[] = [];
 		if (k) {
@@ -182,6 +182,12 @@ Akan disediakan juga riwayat diskusi antara dirimu AI dan Pasien untuk menambah 
 		]);
 
 		console.log(documents);
+	}
+
+	async deleteChatHistoryById(id: string): Promise<boolean> {
+		const result = await Memory.findByIdAndDelete(id);
+
+		return Boolean(result);
 	}
 }
 

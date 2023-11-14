@@ -1,14 +1,26 @@
+# Note
+
+To use this project with our database you can pull from docker hub <https://hub.docker.com/r/dikaakihira17/gigih-capstone-backend>
+
+You need our database to be able to chat with AI with proper answer because our database have the embedded data
+
+# Feature
+
+-   Register & Login
+-   Chat with Health AI Assistant
+-   See Chat History
+
 # How To Run
 
-first run in your terminal
+First run in your terminal
 
 ```MD
 npm install
 ```
 
-then create .env file and see `src/@types/environment.d.ts` to see what's needed in .env file
+Then create .env file and see `src/@types/environment.d.ts` or `.env.example` to see what's needed in .env file
 
-then you can run
+Then run
 
 ```MD
 npm run dev
@@ -16,13 +28,15 @@ npm run dev
 
 to run the program locally with `nodemon`
 
-import `GIGIH Capstone.postman_collection.json` to your Postman, Insomnia, etc, to see the and how to work with all endpoints
+Import `GIGIH Capstone.postman_collection.json` to your Postman, Insomnia, etc, to see the and how to work with all endpoints
 
 # Endpoints
 
 ## Auth
 
 ### **POST api/v1/auth/register**
+
+Registering user account
 
 -   **URL Params**  
      None
@@ -50,6 +64,8 @@ import `GIGIH Capstone.postman_collection.json` to your Postman, Insomnia, etc, 
 
 ### **POST api/v1/auth/login**
 
+User Login
+
 -   **URL Params**  
      None
 -   **Data Params**
@@ -67,13 +83,23 @@ import `GIGIH Capstone.postman_collection.json` to your Postman, Insomnia, etc, 
 -   **Success Response:**
 
     -   **Code**: 202 \
-         **Content**: { message: "Successfully logged in" }
+         **Content**:
+
+                             ```TS
+                              {
+                                   accessToken: <string>,
+                                   refreshToken: <string>,
+                                   message: "Successfully logged in"
+                              }
+                             ```
 
 -   **Error Response:**
     -   **Code:** 500  
          **Content:** `{ err: <error> }`
 
 ### **POST api/v1/auth/requestPasswordReset**
+
+Request to reset password to server
 
 -   **URL Params**  
      None
@@ -91,13 +117,21 @@ import `GIGIH Capstone.postman_collection.json` to your Postman, Insomnia, etc, 
 -   **Success Response:**
 
     -   **Code**: 200 \
-         **Content**: { message: "${CLIENT_URL}/api/v1/passwordReset?token=${resetToken}&id=${user.\_id}" }
+         **Content**:
+
+                             ```TS
+                             {
+                                   message: "${CLIENT_URL}/api/v1/passwordReset?token=${resetToken}&id=${user._id}"
+                              }
+                             ```
 
 -   **Error Response:**
     -   **Code:** 500  
          **Content:** `{ err: <error> }`
 
 ### **POST api/v1/auth/resetPassword**
+
+After get the link from requestResetPassword user can do the reset password using this endpoint
 
 -   **URL Params**  
      None
@@ -183,7 +217,7 @@ get conversation history by memoryId
 
 ### **POST api/v1/chat/conversation**
 
-talking with AI system
+Chatting with AI system
 
 -   **URL Params**  
      none
@@ -209,9 +243,53 @@ talking with AI system
          Connection: "keep-alive",  
          Access-Control-Allow-Origin: "\*",
 
-        **Content:** `<streamed_text>`
+                            **Content:** `<streamed_text>`
 
 -   **Error Response:**
+    -   **Code:** 500  
+         **Content:** `{ err: <error> }`
+
+### **GET api/v1/chat**
+
+get all conversations/chat history by user email
+
+-   **URL Params**  
+     none
+-   **Data Params**  
+     None
+-   **Headers**  
+     Content-Type: application/json  
+     Authorization: `Bearer <token>`
+-   **Success Response:**
+
+    -   **Code:** 200  
+         **Content:** `{ conversations: [<memory_object>] }`
+
+-   **Error Response:**
+    -   **Code:** 500  
+         **Content:** `{ err: <error> }`
+
+### **DELETE api/v1/chat/delete-chat-history**
+
+delete chat history
+
+-   **URL Params**  
+     _Required_ `sessionId=[string]`
+-   **Data Params**  
+     None
+-   **Headers**  
+     Content-Type: application/json  
+     Authorization: `Bearer <token>`
+-   **Success Response:**
+
+    -   **Code:** 200  
+         **Content:** `{ msg: "Chat Deleted" }`
+
+-   **Error Response:**
+
+    -   **Code:** 404  
+         **Content:** `{ err: <error> }`
+
     -   **Code:** 500  
          **Content:** `{ err: <error> }`
 

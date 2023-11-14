@@ -10,7 +10,7 @@ import authService from "../services/AuthService.js";
 
 export const register = async (
 	req: IRequestExtends,
-	res: IResponseExtends<string>
+	res: IResponseExtends<string>,
 ): Promise<void> => {
 	try {
 		const { email, password, confirmPassword }: IUserInputPassword =
@@ -41,7 +41,7 @@ export const register = async (
 
 export const login = async (
 	req: IRequestExtends,
-	res: IResponseExtends<{ message: string }>
+	res: IResponseExtends<{ message: string }>,
 ): Promise<void> => {
 	try {
 		const { email, password }: IUser = req.body;
@@ -73,16 +73,23 @@ export const login = async (
 		const accessToken = jwtSign(payload, accessTokenExpiresIn);
 		const refreshToken = jwtSign(payload, refreshTokenExpiresIn);
 
-		res.cookie("accessToken", accessToken, {
-			httpOnly: true,
-			sameSite: "strict",
-		})
-			.cookie("refreshToken", refreshToken, {
-				httpOnly: true,
-				sameSite: "strict",
-			})
-			.status(StatusCodes.Accepted202)
-			.json({ message: "Successfully logged in" });
+		// res.cookie("accessToken", accessToken, {
+		// 	httpOnly: true,
+		// 	sameSite: "none",
+		// })
+		// 	.cookie("refreshToken", refreshToken, {
+		// 		httpOnly: true,
+		// 		sameSite: "none",
+		// 	})
+		// 	.status(StatusCodes.Accepted202)
+		// 	.json({ message: "Successfully logged in" });
+
+		res.status(StatusCodes.Accepted202).send({
+			accessToken,
+			refreshToken,
+			message: "Successfully logged in",
+		});
+
 		return;
 	} catch (error) {
 		throw new InternalServerError((error as Error).message);
@@ -91,7 +98,7 @@ export const login = async (
 
 export const requestPasswordReset = async (
 	req: IRequestExtends,
-	res: IResponseExtends<{ message: string }>
+	res: IResponseExtends<{ message: string }>,
 ): Promise<void> => {
 	try {
 		const requestPasswordResetService =
@@ -107,14 +114,14 @@ export const requestPasswordReset = async (
 
 export const resetPassword = async (
 	req: IRequestExtends,
-	res: IResponseExtends<{ success: boolean }>
+	res: IResponseExtends<{ success: boolean }>,
 ) => {
 	try {
 		const resetPasswordService = await authService.resetPassword(
 			req.body.userId,
 			req.body.token,
 			req.body.password,
-			req.body.confirmPassword
+			req.body.confirmPassword,
 		);
 
 		res.status(StatusCodes.Accepted202).json({
