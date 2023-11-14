@@ -85,13 +85,11 @@ User Login
     -   **Code**: 202 \
          **Content**:
 
-                                     ```TS
-                                      {
-                                           accessToken: <string>,
-                                           refreshToken: <string>,
-                                           message: "Successfully logged in"
-                                      }
-                                     ```
+              {
+                   accessToken: <string>,
+                   refreshToken: <string>,
+                   message: "Successfully logged in"
+              }
 
 -   **Error Response:**
     -   **Code:** 500  
@@ -235,9 +233,8 @@ Chatting with AI system
          Content-Type: "text/event-stream",  
          Cache-Control: "no-cache",  
          Connection: "keep-alive",  
-         Access-Control-Allow-Origin: "\*",
-
-                                    **Content:** `<streamed_text>`
+         Access-Control-Allow-Origin: "\*",  
+         **Content:** `<streamed_text>`
 
 -   **Error Response:**
     -   **Code:** 500  
