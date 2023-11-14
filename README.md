@@ -85,13 +85,13 @@ User Login
     -   **Code**: 202 \
          **Content**:
 
-                             ```TS
-                              {
-                                   accessToken: <string>,
-                                   refreshToken: <string>,
-                                   message: "Successfully logged in"
-                              }
-                             ```
+                                     ```TS
+                                      {
+                                           accessToken: <string>,
+                                           refreshToken: <string>,
+                                           message: "Successfully logged in"
+                                      }
+                                     ```
 
 -   **Error Response:**
     -   **Code:** 500  
@@ -117,13 +117,7 @@ Request to reset password to server
 -   **Success Response:**
 
     -   **Code**: 200 \
-         **Content**:
-
-                             ```TS
-                             {
-                                   message: "${CLIENT_URL}/api/v1/passwordReset?token=${resetToken}&id=${user._id}"
-                              }
-                             ```
+         **Content**: `{ message: "{CLIENT_URL}/api/v1/passwordReset?token={resetToken}&id={user.\_id}" }`
 
 -   **Error Response:**
     -   **Code:** 500  
@@ -243,7 +237,7 @@ Chatting with AI system
          Connection: "keep-alive",  
          Access-Control-Allow-Origin: "\*",
 
-                            **Content:** `<streamed_text>`
+                                    **Content:** `<streamed_text>`
 
 -   **Error Response:**
     -   **Code:** 500  
