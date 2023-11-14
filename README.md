@@ -10,7 +10,15 @@ You need our database to be able to chat with AI with proper answer because our 
 -   Chat with Health AI Assistant
 -   See Chat History
 
-# How To Run
+# How To Run With Docker
+
+-   go <https://hub.docker.com/r/dikaakihira17/gigih-capstone-backend>
+-   copy the pull command and run in your terminal
+-   after that open your docker desktop and search `dikaakihira17/gigih-capstone-backend` images
+-   run images and set port to 7000
+-   open the container menu and see if the container with that images is running
+
+# How To Use
 
 First run in your terminal
 
