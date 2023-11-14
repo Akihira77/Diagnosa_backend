@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import ChatService from "../services/ChatService.js";
 import { StatusCodes } from "../utils/constant.js";
-import { BadRequestError } from "../errors/main.error.js";
+import { BadRequestError, CustomAPIError } from "../errors/main.error.js";
 import { IRequestExtends } from "../utils/express-extends.js";
 import { Memory } from "../models/memoryModel.js";
 
@@ -102,10 +102,49 @@ const findConversationBySessionId = async (
 	}
 };
 
+const deleteChatHistoryBySessionId = async (
+	req: Request<{ sessionId: string }, never, never, never>,
+	res: Response,
+) => {
+	const sessionId = req.params.sessionId;
+	const chatService = new ChatService();
+	const result = await chatService.deleteChatHistoryById(sessionId);
+
+	if (!result) {
+		throw new CustomAPIError(
+			"Invalid Chat History",
+			StatusCodes.NotFound404,
+		);
+	}
+
+	res.status(StatusCodes.Ok200).send({ msg: "Chat Deleted" });
+	return;
+};
+
+const cleanMemory = async (req: Request, res: Response) => {
+	await Memory.deleteMany({});
+
+	res.status(StatusCodes.Ok200).send({ msg: "Chat History Cleaned" });
+	return;
+};
+
+const getConversationsByEmail = async (req: IRequestExtends, res: Response) => {
+	const email = req.user?.email;
+	const conversations = await Memory.find({
+		email,
+	});
+
+	res.status(StatusCodes.Ok200).send({ conversations });
+	return;
+};
+
 export {
 	saveData,
 	cleanData,
 	conversation,
 	initialize,
 	findConversationBySessionId,
+	deleteChatHistoryBySessionId,
+	cleanMemory,
+	getConversationsByEmail,
 };

@@ -15,14 +15,14 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NDVhNThmMTc4MmVmZmU2MTIxNWFlOSIsImVtYWlsIjoidXNlcjEyM0BtYWlsLmNvbSJ9LCJpYXQiOjE2OTkwNjMxOTYsImV4cCI6MTY5OTA2Njc5Nn0.LKd7yue8e8TM_WKSDRAqgygrN3T1CSTIxtuL3g7u40A"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NTJkM2RmNGFmMzFjODE3ZTM1NmYxZiIsImVtYWlsIjoidXNlcjEyM0BnbWFpbC5jb20ifSwiaWF0IjoxNjk5OTI3MDEyLCJleHAiOjE2OTk5MzA2MTJ9.WTo74uUDTgGxFeAVIEMsc6ThfNLSdb2Ak8AtfDKw08A"
 							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"input\" : \"anakku susah tidur pas malam\",\r\n\t\"sessionId\" : \"6545a5cd1782effe61215aec\"\r\n}",
+							"raw": "{\r\n\t\"input\" : \"anakku susah tidur pas malam\",\r\n\t\"sessionId\" : \"6552d88f6ecc519552f37804\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,7 +75,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NDVhNThmMTc4MmVmZmU2MTIxNWFlOSIsImVtYWlsIjoidXNlcjEyM0BtYWlsLmNvbSJ9LCJpYXQiOjE2OTkwNjgxNTAsImV4cCI6MTY5OTA3MTc1MH0.VXQCsrETkAB7mpDLdnUWdtav5SdLSZ5uEupbt73Ik4c"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NTJkM2RmNGFmMzFjODE3ZTM1NmYxZiIsImVtYWlsIjoidXNlcjEyM0BnbWFpbC5jb20ifSwiaWF0IjoxNjk5OTI3MDEyLCJleHAiOjE2OTk5MzA2MTJ9.WTo74uUDTgGxFeAVIEMsc6ThfNLSdb2Ak8AtfDKw08A"
 							}
 						},
 						"method": "GET",
@@ -113,6 +113,51 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete Chat History",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NTJkM2RmNGFmMzFjODE3ZTM1NmYxZiIsImVtYWlsIjoidXNlcjEyM0BnbWFpbC5jb20ifSwiaWF0IjoxNjk5OTI3MDEyLCJleHAiOjE2OTk5MzA2MTJ9.WTo74uUDTgGxFeAVIEMsc6ThfNLSdb2Ak8AtfDKw08A"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/chat/delete-chat-history/6552d88f6ecc519552f37804"
+					},
+					"response": []
+				},
+				{
+					"name": "Clean Memory",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NTJkM2RmNGFmMzFjODE3ZTM1NmYxZiIsImVtYWlsIjoidXNlcjEyM0BnbWFpbC5jb20ifSwiaWF0IjoxNjk5OTI3MDEyLCJleHAiOjE2OTk5MzA2MTJ9.WTo74uUDTgGxFeAVIEMsc6ThfNLSdb2Ak8AtfDKw08A"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{API_URL}}/chat/clean-memory"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Conversations By Email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJJZCI6IjY1NTJkM2RmNGFmMzFjODE3ZTM1NmYxZiIsImVtYWlsIjoidXNlcjEyM0BnbWFpbC5jb20ifSwiaWF0IjoxNjk5OTI3MDEyLCJleHAiOjE2OTk5MzA2MTJ9.WTo74uUDTgGxFeAVIEMsc6ThfNLSdb2Ak8AtfDKw08A"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{API_URL}}/chat"
+					},
+					"response": []
 				}
 			]
 		},
@@ -126,7 +171,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"email\" : \"user123@mail.com\",\r\n\t\"password\" : \"User123\",\r\n\t\"confirmPassword\" : \"User123\"\r\n}",
+							"raw": "{\r\n\t\"email\" : \"user123@gmail.com\",\r\n\t\"password\" : \"User123\",\r\n\t\"confirmPassword\" : \"User123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -144,7 +189,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"email\" : \"user123@mail.com\",\r\n\t\"password\" : \"User123\"\r\n}",
+							"raw": "{\r\n\t\"email\" : \"user123@gmail.com\",\r\n\t\"password\" : \"User123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
