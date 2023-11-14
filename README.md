@@ -6,7 +6,7 @@ You need our database to be able to chat with AI with proper answer because our 
 
 # Feature
 
--   Register & Login
+-   Register, Login, & Change Password
 -   Chat with Health AI Assistant
 -   See Chat History
 
