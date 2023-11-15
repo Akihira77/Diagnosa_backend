@@ -15,8 +15,8 @@ You need our database to be able to chat with AI with proper answer because our 
 -   go <https://hub.docker.com/r/dikaakihira17/gigih-capstone-backend>
 -   copy the pull command and run in your terminal
 -   after that open your docker desktop and search `dikaakihira17/gigih-capstone-backend` images
--   run images and set port to 7000
--   open the container menu and see if the container with that images is running
+-   set to port 7000 and run the image
+-   open the container menu and see if the container with that image is running
 
 # How To Use
 
@@ -218,6 +218,13 @@ get conversation history by memoryId
 ### **POST api/v1/chat/conversation**
 
 Chatting with AI system
+
+NOTE: to see how this works u can use curl comamnd and run in cmd   
+     1. set the auth bearer token and request body in postman  
+     2. after that open `code` menu on the right sidebar  
+     3. click settings, *Required* set `Quote Type` to `double` and `Line continuation character` set accordingly your operating system    
+     4. copy the curl command and make the request body/data to all on the same line ex: `-d "{\"input\" : \"<string>\",\"sessionId\" : \"<string>\"}"`  
+     5. paste in your cmd and enter
 
 -   **URL Params**  
      none
