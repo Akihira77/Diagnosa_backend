@@ -219,10 +219,10 @@ get conversation history by memoryId
 
 Chatting with AI system
 
-NOTE: to see how this works u can use curl comamnd and run in cmd   
-     1. set the auth bearer token and request body in postman  
+NOTE: to see how this works you can use curl comamnd and run in cmd   
+     1. set auth bearer token and request body in postman  
      2. after that open `code` menu on the right sidebar  
-     3. click settings, *Required* set `Quote Type` to `double` and `Line continuation character` set accordingly your operating system    
+     3. click settings, *Required* set `Quote Type` to `double` and `Line continuation character` set accordingly to your operating system    
      4. copy the curl command and make the request body/data to all on the same line ex: `-d "{\"input\" : \"<string>\",\"sessionId\" : \"<string>\"}"`  
      5. paste in your cmd and enter
 
